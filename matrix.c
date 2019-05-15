@@ -15,7 +15,7 @@ attribute is then used to actually update the matrix display with the colors
 at each LED position.
 */
 void drawPixel(uint8_t row, uint8_t col, const color_t * color) {
-	if(row < 0 || row > 15 || col < 0 || col > 31){
+	if(row > 15 || col > 31){
 		return;
 	}
 	if(row == 0) {

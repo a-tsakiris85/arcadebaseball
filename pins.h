@@ -19,3 +19,4 @@
 void config_pins_as_output(void);
 
 void digital_write(int pin, int high);
+

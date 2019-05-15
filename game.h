@@ -33,4 +33,10 @@ typedef struct result {
 
 void updateGameState(game_t * state, result_t * result);
 game_t * init_game_state(void);
-void make_random(game_t * game);
+int random(int high);
+int inBox(int row, int col);
+result_t * produce_result(int row, int col, int wasBall);
+int determine_speed(int a);
+void create_pitch(int sw1, int sw2);
+
+

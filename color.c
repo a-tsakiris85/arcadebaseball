@@ -66,5 +66,6 @@ color_t * get_color(int c) {
 	if(c==DARK_BLUE) {
 		return c_darkblue;
 	}
+	else return c_clear;
 	
 }

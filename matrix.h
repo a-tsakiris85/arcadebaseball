@@ -34,3 +34,4 @@ void start_matrix_refresh(void);
 void draw_num(int n, uint8_t row, uint8_t col, color_t * color);
 void enable_interrupt(void); //not used
 void disable_interrupt(void); //not used
+
