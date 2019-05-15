@@ -1,5 +1,6 @@
 #include <fsl_device_registers.h>
 
+// macros used to abstract the digital_write function
 #define R1 0
 #define G1 1
 #define B1 2

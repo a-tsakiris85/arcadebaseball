@@ -2,8 +2,25 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-
-
+/*
+init_game_state() allocates memory for and creates a new instance 
+of a game structure with the default values (which correspond to the
+start of a baseball game).
+*/
+game_t * init_game_state() {
+	game_t * game = (game_t *) malloc (sizeof(game_t));
+	game->score1 = 0;
+	game->score2 = 0;
+	game->inning = 1;
+	game->batter = 1;
+	game->balls = 0;
+	game->strikes = 0;
+	game->outs = 0;
+	game->first = 0;
+	game->second = 0;
+	game->third = 0;
+	return game;
+}
 
 //val 1,2,3,4 = (single, double, triple, HR), 5=walk
 int moveRunners(game_t * state, int val) {
@@ -52,6 +69,7 @@ int moveRunners(game_t * state, int val) {
 	
 	return runs_scored;
 }
+
 void updateGameState(game_t * state, result_t * result) {
 	//HIT
 	int runs_scored = 0;
@@ -86,6 +104,7 @@ void updateGameState(game_t * state, result_t * result) {
 			state->balls = 0;
 			runs_scored = moveRunners(state, 5);
 		}
+		else state->balls++;
 	}
 	
 	if(state->batter == 1) {
@@ -109,36 +128,4 @@ void updateGameState(game_t * state, result_t * result) {
 			state->inning++; //player 2 bats second.
 		}
 	}
-}
-
-
-
-
-
-game_t * init_game_state() {
-	game_t * game = (game_t *) malloc (sizeof(game_t));
-	game->score1 = 0;
-	game->score2 = 0;
-	game->inning =1;
-	game->batter = 1;
-	game->balls = 0;
-	game->strikes = 0;
-	game->outs = 0;
-	game->first = 0;
-	game->second = 0;
-	game->third = 0;
-	return game;
-}
-
-void make_random(game_t * game) {
-	game->score1 = 5;
-	game->score2 = 8;
-	game->inning =3;
-	game->batter = 2;
-	game->balls = 3;
-	game->strikes = 1;
-	game->outs = 2;
-	game->first = 1;
-	game->second = 0;
-	game->third = 1;
 }

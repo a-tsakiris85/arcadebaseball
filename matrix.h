@@ -7,14 +7,22 @@
 
 #define NUM_ROWS 16
 #define NUM_COLS 32
-#define RESOLUTION 16
-#define THRESHOLD_RESET (256 / RESOLUTION * (NUM_ROWS/2))
 
+/*
+The structure representing the LED matrix.
 
+	- buffer[16][32] is a 2D array of color objects. The color
+	  object at a specify coordinate denotes which color to display at 
+		the corresponding LED on the matrix display.
+	- currentRowPair is an integer denoting which two rows are currently
+	  being drawn. According to Adafruit's documentation, the matrix display
+		is divided into 8 interleaved sections / strips. The zeroth section is
+		the 0th and 8th rows of LEDs, the first section is the 1st 9th rows of LEDs, etc.
+	- 
+*/
 typedef struct Matrix  {
 	color_t buffer[NUM_ROWS][NUM_COLS];
 	uint8_t currentRowPair; //0 -> 0,8, 1-> 1,9 etc. Which rows to draw on.
-	uint8_t cycle_index; //this is used for doing all the cool color stuff.
 } matrix_t;
 
 void setup_matrix(void);

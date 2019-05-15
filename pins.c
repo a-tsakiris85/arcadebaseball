@@ -1,9 +1,11 @@
-
 #include "pins.h"
 
-
+/*
+config_pins_as_output() sets up all of the pin configurations for the LED matrix display 
+based on the pin connections we chose. 
+*/
 void config_pins_as_output() {
-	SIM->SCGC5 |= (1 << 10) | (1 << 11) | (1 << 12) | (1 << 13); //Enable to B,C,D,E
+	SIM->SCGC5 |= (1 << 10) | (1 << 11) | (1 << 12) | (1 << 13); //Enable clock to ports B,C,D,E
 	
 	//Enable Pins as GPIO
 	PORTE->PCR[24] = (1 <<  8); //R1 is E24
@@ -14,12 +16,15 @@ void config_pins_as_output() {
 	PORTD->PCR[0] = (1 <<  8); //G2 is D0
 	PORTD->PCR[2] = (1 <<  8); //B2 is D2
 	
+	// Pins A, B, and C on the LED board are row select lines
 	PORTB->PCR[2] = (1 <<  8); //A is B2
 	PORTB->PCR[3] = (1 <<  8); //B is B3
 	PORTB->PCR[10] = (1 <<  8);//C is B10
-	PORTB->PCR[11] = (1 <<  8); //LAT is B11
+	
+	PORTB->PCR[11] = (1 <<  8);//LAT is B11 (the LAT signal marks the end of a row of data)
 	PORTC->PCR[4] = (1 <<  8); //CLK is C4
-	PORTC->PCR[12] = (1 <<  8); //OE is C12 
+	PORTC->PCR[12] = (1 <<  8); //OE is C12 (OE (output enable) switches the LEDs off when transitioning
+															//from one row to the next).
 	
 	//Make them output pins
 	PTB->PDDR = (1 << 2 | 1 << 3 | 1 << 10 | 1 << 11 );
@@ -28,6 +33,11 @@ void config_pins_as_output() {
 	PTE->PDDR = (1 << 24 | 1 << 25 );  	
 }
 
+
+/*
+digital_write(pin, high) either writes or clears the pin specified by the
+integer `pin` depending on the value of `high`
+*/
 void digital_write(int pin , int high) {
 	if(pin == 0) {
 		if(high) {

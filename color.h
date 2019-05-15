@@ -11,7 +11,14 @@
 #define YELLOW 5
 #define DARK_BLUE 6
 
-typedef struct RGB {
+
+
+/* 
+ A structure used to describe a color in RGB. 
+ RGB values are treated as binary values. If the value of a color component is 0,
+ the color is treated as 0 in RGB. If the value is 1, the color is treated as 255 in RGB. 
+*/
+typedef struct rgb {
 	uint8_t r;
 	uint8_t g;
 	uint8_t b;
