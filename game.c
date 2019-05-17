@@ -28,7 +28,7 @@ init_game_state() allocates memory for and creates a new instance
 of a game structure with the default values (which correspond to the
 start of a baseball game).
 */
-game_t * init_game_state() {
+game_t * init_game_state(void) {
 	game_t * game = (game_t *) malloc (sizeof(game_t));
 	game->score1 = 0;
 	game->score2 = 0;
@@ -41,6 +41,18 @@ game_t * init_game_state() {
 	game->second = 0;
 	game->third = 0;
 	return game;
+}
+
+/*
+init_result() allocates memory for and creates a new instance of a result structure
+with default values (all initialized to 0).
+*/
+result_t * init_result(void) {
+	result_t * result = (result_t *) malloc(sizeof(result_t));
+	result->ball = 0;
+	result->hit = 0;
+	result->out = 0;
+	result->strike = 0;
 }
 
 /*
@@ -249,16 +261,39 @@ int determine_speed(int a) {
 	int pitch = (sw2 << 1) + sw1;
 	int speed;
 	// if pitcher pressed in RED area -> slow pitch
-	if(a <= 4 || a >= 11) speed = 5000;
+	if(a <= 4 || a >= 11) speed = 4000;
 	// if pitcher pressed in YELLOW area -> medium pitch
-	if(a <=6 || a >= 9) speed = 3000;
+	if(a <=6 || a >= 9) speed = 2000;
 	// if pitcher pressed in GREEN area -> fast pitch
-	if(a == 7 || a == 8) speed = 1800;
+	if(a == 7 || a == 8) speed = 1200;
 	
 	if(pitch==0) /*fast ball*/ return speed;
 	if(pitch==1) /*curve ball*/ return speed * 1.5;
 	if(pitch==2) /*knuckle ball*/ return speed * 3.5;
+	if(pitch==3) /*split finger ball*/ return speed * 1.5;
 	return 3000;
+}
+
+void curveball(int left) {
+		int delta = left ? -1 : 1;
+		int ball = random(2)-1;
+		for(int i=0; i<31; i++) {
+			pitch[i][1] = 1;
+		}
+		for(int i=0; i<10; i=i+2) {
+			pitch[i][0] = delta;
+			pitch[i+1][0] = 0;
+		}
+		
+		pitch[10][0] = delta;
+		int randNum = random(20)+11;
+		for(int i=11; i< randNum; i=i+2) {
+			pitch[i][0] = -delta;
+			pitch[i+1][0] = 0;
+		}
+		for(int i=randNum; i < 31; i++) {
+			pitch[i][0] = 0;
+		}
 }
 
 /* sw2 sw1: 00 = fast ball, 01 = curve ball, 10 = knuckle ball, 11 = splitter ball
@@ -270,7 +305,7 @@ void create_pitch(int sw1, int sw2) {
 	switch (chosen_pitch) {
 		case 0:
 			// fast ball!
-			for(int i = 0; i < 50; i++) {
+			for(int i = 0; i < 31; i++) {
 				pitch[i][0] = 0;
 				pitch[i][1] = 1;
 			}
@@ -278,26 +313,21 @@ void create_pitch(int sw1, int sw2) {
 		case 1:
 			// curve ball!
 			left = random(2)-1;
-			for(int i = 0; i < 10; i++) {
-				left = 0;
-				pitch[i][0] = left==0 ? -1 : 1;
-				pitch[i][1] = 1;
-			}
-			for(int i = 10; i < 20; i++) {
-				pitch[i][0] = left==0 ? 1 : -1;
-				pitch[i][1] = 1;
-			}
-			for(int i = 20; i < 30; i++) {
-				pitch[i][0] = 0;
-				pitch[i][1] = 1;
-			}
+			curveball(left);
 			break;
 		case 2:
-			// knuckle ball
-			for(int i = 0; i < 50; i++) {
+			// knuckle ball!
+			for(int i = 0; i < 31; i++) {
 				pitch[i][0] = random(3)-2;
 				pitch[i][1] = 1;
 			}
 			break;
-		}
+		case 3:
+			// split finger ball!
+			for(int i = 0; i < 31; i++) {
+				pitch[i][0] = 0;
+				pitch[i][1] = 1;
+			}
+			break;
+	}
 }

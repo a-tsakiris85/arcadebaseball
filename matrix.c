@@ -147,7 +147,7 @@ void disable_interrupt(void) {
 	PIT->CHANNEL[0].TCTRL = 1;
 }
 void enable_interrupt(void) {
-	PIT->CHANNEL[0].LDVAL = DEFAULT_SYSTEM_CLOCK / 750;
+	PIT->CHANNEL[0].LDVAL = DEFAULT_SYSTEM_CLOCK / 1000;
 	NVIC_EnableIRQ(PIT0_IRQn);
 	PIT->CHANNEL[0].TFLG |= PIT_TFLG_TIF_MASK; // clear timer interrupt flag
 	PIT->CHANNEL[0].TCTRL |= PIT_TCTRL_TIE_MASK; // enable timer interrupts

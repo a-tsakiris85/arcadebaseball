@@ -37,7 +37,6 @@ c_green = (init_color(0,1,0));
 c_red = (init_color(1,0,0));
 c_white = (init_color(1,1,1));
 c_yellow = (init_color(1,1,0));
-c_darkblue = (init_color(1,1,1));
 }
 
 /*
@@ -62,9 +61,6 @@ color_t * get_color(int c) {
 	}
 	if(c== YELLOW) {
 		return c_yellow;
-	}
-	if(c==DARK_BLUE) {
-		return c_darkblue;
 	}
 	else return c_clear;
 	

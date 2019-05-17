@@ -251,7 +251,7 @@ void do_action() {
 		// Go through this while loop 8 times, waiting for 
 		// the pitcher to react. If they don't react in time,
 		// throw the pitch anyways
-		while(count < 8 && pressed_pitch_loc < 0) {
+		while(count < 16 && pressed_pitch_loc < 0) {
 			// while the ball is still traveling left
 			while(ball_loc < 13 && pressed_pitch_loc < 0) {
 				drawPixel(ball_loc, 7, get_color(WHITE));
@@ -273,17 +273,16 @@ void do_action() {
 		delay(10000);
 		// clear the pitcher's bar
 		fillRect(0,5,3,16,get_color(CLEAR));
-		
 		for(int i = 0; i < 3; i++) {
 			drawPixel(7,5,get_color(WHITE));
 			delay(10000);
 			drawPixel(7,5,get_color(CLEAR));
 			delay(10000);
 		}
-		
 		//Would normally create a more interesting pitch based on pitcher_pressed_loc and 2 switches.
 		//For now will just do a fastball.
 		create_pitch(sw1,sw2);
+		int chosenPitch = (sw2 << 1) + sw1;
 		ball_row = 7;
 		ball_col = 5;
 		batted_col = -1; // TODO: use for balls
@@ -294,9 +293,14 @@ void do_action() {
 		int i = 0;
 		while(ball_col < 31 && batted_row < 0) {
 			drawPixel(ball_row, ball_col, get_color(WHITE));
-			delay(meter_speed);
-			drawPixel(ball_row, ball_col, (ball_col == 29 || ball_col == 25)&&
-					inBox(ball_row,ball_col)>0 ? get_color(YELLOW) : get_color(CLEAR));
+			if(chosenPitch==3) {
+				if(ball_col < 20) delay(meter_speed);
+				else delay(1000);
+			}
+			else delay(meter_speed);
+			drawPixel(ball_row, ball_col, get_color(CLEAR));
+			fillRect(6,25,5,4,get_color(YELLOW));
+			fillRect(7,26,3,2,get_color(CLEAR));
 			ball_col += pitch[i][1];
 			if(ball_col < 0) ball_col = 0;
 			if(ball_col > 31) ball_row = 31;

@@ -16,7 +16,7 @@ extern int batted_row;
 extern int batted_col;
 
 extern result_t * current_result;
-extern game_t * game;
+extern game_t * game; 
 
 /*
 config() sets up all of the necessary configurations to allow user input.

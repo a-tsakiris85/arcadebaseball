@@ -38,5 +38,6 @@ int inBox(int row, int col);
 result_t * produce_result(int row, int col, int wasBall);
 int determine_speed(int a);
 void create_pitch(int sw1, int sw2);
+result_t * init_result(void);
 
 
